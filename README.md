@@ -7,7 +7,7 @@ The user writes queries in console, and gets results or sees the logs on status 
 Queries can be in the following form
 
 ```
-CREATE TABLE table_name(
+CREATE_TABLE table_name(
     col1 type,
     col2 type,
     col3 type,
@@ -51,7 +51,7 @@ For the simplicities sake the data will be saved under the projects directory, i
 file system. The directory name is `dataf`.
 
 Files are representations of tables, their metadata + data.
-Metadata containing files are prefixed with `tbl_` followed by the table name, 
+Metadata containing files are prefixed with `tbl_metadata_` followed by the table name, 
 data containing files are prefixed with `tbl_data_`
 
 Metadata file consists of single line with the following form
@@ -69,15 +69,14 @@ col1val|col2val|col3val|...
 
 If the `INSERT` operation is not consistent with the created table structure an error will result immediately.
 
-A `SELECT` query will return an abstraction called `QueryResult` that holds an arraylist where at each index i resides
-textual representation of the i+1 row of the result. It will print in the following form 
+A `SELECT` query will return an abstraction called `QueryResult` that holds an arraylist. It will print in the following form 
 ```
-+ -- + ------ + ------ + ------ + ------ +
-| rn | col1   | col2   | col3   | ....   |
-==========================================
-| 1  |col1val |col2val |col3val | ....   |
-| 2  |col1val |col2val |col3val | ....   |
-| 3  |col1val |col2val |col3val | ....   |
++ ------ + ------ + ------ + ------ +
+| col1   | col2   | col3   | ....   |
+=====================================
+|col1val |col2val |col3val | ....   |
+|col1val |col2val |col3val | ....   |
+|col1val |col2val |col3val | ....   |
 + -- + ------ + ------ + ------ + ------ +
 ```
 
