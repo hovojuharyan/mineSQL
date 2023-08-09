@@ -14,7 +14,7 @@ CREATE_TABLE table_name(
         ...
 );
 
-DROP TABLE table_name;
+DROP_TABLE table_name;
 ```
 
 Supported data types are
@@ -23,11 +23,10 @@ INT, STRING, BOOL
 ``
 
 ```
-INSERT INTO table_name(col1, col2, ...) VALUES (col1val, col2val, ...);
+INSERT_INTO table_name(col1, col2, ...) VALUES (col1val, col2val, ...);
 
 SELECT column1, column2, ... [or *]
-FROM table1
-JOIN table2 ON table1.column = table2.column
+FROM table_name
 WHERE condition1 AND condition2
 GROUP_BY column1
 HAVING aggregate_function(column) condition
@@ -50,7 +49,7 @@ MIN, MAX, SUM, AVG, COUNT, COUNT(exp)
 For the simplicities sake the data will be saved under the projects directory, in files emulating a very basic RDBMS 
 file system. The directory name is `dataf`.
 
-Files are representations of tables, their metadata + data.
+Files are representations of tables, their columnsDefinition + data.
 Metadata containing files are prefixed with `tbl_metadata_` followed by the table name, 
 data containing files are prefixed with `tbl_data_`
 
