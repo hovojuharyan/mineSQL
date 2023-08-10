@@ -19,8 +19,8 @@ public class CreateOperation implements Operation{
         try {
             serializer.serialize(columnsDefinition);
             return Result.ok("CREATED TABLE " + tableName);
-        } catch (Exception ignored) {
-            return Result.error("FAILED TO CREATE TABLE " + tableName);
+        } catch (Exception e) {
+            return Result.error("FAILED TO CREATE TABLE " + tableName, e);
         }
     }
 

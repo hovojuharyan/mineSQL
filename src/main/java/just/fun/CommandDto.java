@@ -32,6 +32,13 @@ public class CommandDto {
         return values;
     }
 
+    public List<String> getColumnNames() {
+        return columns.stream()
+                .map(Column::name)
+                .toList();
+
+    }
+
     public static Builder builder(String operation, String tableName) {
         return new Builder(operation, tableName);
     }

@@ -17,8 +17,8 @@ public class DropOperation implements Operation {
         try {
             dropper.drop();
             return Result.ok("DROPPED TABLE "  + tableName);
-        } catch (Exception ignored) {
-            return Result.error("FAILED TO DROP TABLE " + tableName);
+        } catch (Exception e) {
+            return Result.error("FAILED TO DROP TABLE " + tableName, e);
         }
     }
 

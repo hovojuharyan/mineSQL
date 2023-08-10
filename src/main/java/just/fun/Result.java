@@ -26,8 +26,8 @@ public class Result {
         return new Result(Status.OK, message);
     }
 
-    public static Result error(String message) {
-        return new Result(Status.ERROR, message);
+    public static Result error(String message, Throwable error) {
+        return new Result(Status.ERROR, message + ". Cause\n" + error);
     }
 
 }

@@ -4,6 +4,7 @@ import just.fun.serial.SerialContent;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class ColumnsDefinition implements SerialContent {
@@ -24,6 +25,10 @@ public class ColumnsDefinition implements SerialContent {
         return new ColumnsDefinition(columns);
     }
 
+    public List<Column> getColumns() {
+        return columns;
+    }
+
     @Override
     public String getTextualContent() {
         return columns.stream()
@@ -34,6 +39,11 @@ public class ColumnsDefinition implements SerialContent {
     public List<String> names() {
         return columns.stream()
                 .map(Column::name)
-                .sorted().toList();
+                .toList();
+    }
+
+    public Map<String, ColumnType> asMap() {
+        return columns.stream()
+                .collect(Collectors.toMap(Column::name, Column::type));
     }
 }
