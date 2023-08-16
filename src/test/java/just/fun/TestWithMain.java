@@ -1,5 +1,8 @@
 package just.fun;
 
+import just.fun.column.Column;
+import just.fun.column.ColumnType;
+
 public class TestWithMain {
     private static final Engine ENGINE = new Engine();
 

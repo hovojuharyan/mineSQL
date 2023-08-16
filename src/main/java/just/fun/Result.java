@@ -27,7 +27,8 @@ public class Result {
     }
 
     public static Result error(String message, Throwable error) {
-        return new Result(Status.ERROR, message + ". Cause\n" + error);
+        error.printStackTrace();
+        return new Result(Status.ERROR, message + ". Cause\n");
     }
 
 }

@@ -1,11 +1,14 @@
-package just.fun;
+package just.fun.operations;
 
-import just.fun.insert.InsertOperation;
-import just.fun.insert.InsertValidator;
+import just.fun.CommandDto;
+import just.fun.Operation;
+import just.fun.column.ColumnsDefinition;
+import just.fun.operations.insert.InsertOperation;
+import just.fun.operations.insert.InsertValidator;
 import just.fun.serial.ColumnsDefinitionFileDeserializer;
+import just.fun.serial.CreateFileSerializer;
 import just.fun.serial.InsertFileSerializer;
 import just.fun.serial.SimpleFileDropper;
-import just.fun.serial.CreateFileSerializer;
 
 public class OperationResolver {
     private static final String DROP_TABLE_OPNAME = "DROP_TABLE";

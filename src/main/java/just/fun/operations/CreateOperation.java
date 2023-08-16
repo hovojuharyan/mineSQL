@@ -1,8 +1,11 @@
-package just.fun;
+package just.fun.operations;
 
+import just.fun.Operation;
+import just.fun.Result;
+import just.fun.column.ColumnsDefinition;
 import just.fun.serial.Serializer;
 
-public class CreateOperation implements Operation{
+public class CreateOperation implements Operation {
 
     private final Serializer serializer;
     private final String tableName;

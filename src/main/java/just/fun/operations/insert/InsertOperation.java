@@ -1,6 +1,6 @@
-package just.fun.insert;
+package just.fun.operations.insert;
 
-import just.fun.ColumnsDefinition;
+import just.fun.column.ColumnsDefinition;
 import just.fun.Operation;
 import just.fun.Result;
 import just.fun.serial.ColumnsDefinitionDeserializer;

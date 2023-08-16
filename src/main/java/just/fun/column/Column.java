@@ -1,4 +1,4 @@
-package just.fun;
+package just.fun.column;
 
 import java.util.Objects;
 

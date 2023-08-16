@@ -1,5 +1,7 @@
-package just.fun;
+package just.fun.operations;
 
+import just.fun.Operation;
+import just.fun.Result;
 import just.fun.serial.Dropper;
 
 public class DropOperation implements Operation {

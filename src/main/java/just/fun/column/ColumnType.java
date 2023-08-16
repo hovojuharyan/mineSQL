@@ -1,4 +1,4 @@
-package just.fun;
+package just.fun.column;
 
 public enum ColumnType {
     INT {

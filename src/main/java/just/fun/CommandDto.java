@@ -1,5 +1,7 @@
 package just.fun;
 
+import just.fun.column.Column;
+
 import java.util.ArrayList;
 import java.util.List;
 

@@ -1,8 +1,8 @@
-package just.fun.insert;
+package just.fun.operations.insert;
 
-import just.fun.Column;
-import just.fun.ColumnType;
-import just.fun.ColumnsDefinition;
+import just.fun.column.Column;
+import just.fun.column.ColumnType;
+import just.fun.column.ColumnsDefinition;
 import just.fun.serial.SerialContent;
 
 import java.util.*;

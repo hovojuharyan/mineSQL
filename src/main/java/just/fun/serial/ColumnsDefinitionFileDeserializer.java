@@ -1,6 +1,6 @@
 package just.fun.serial;
 
-import just.fun.ColumnsDefinition;
+import just.fun.column.ColumnsDefinition;
 
 import java.io.IOException;
 import java.nio.file.Files;
