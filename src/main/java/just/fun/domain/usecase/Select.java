@@ -17,22 +17,11 @@ public class Select {
     DataDeserializer dataDeserializer;
     List<Column> queriedColumns;
     Map<Column, Predicate<String>> conditions;
-    SelectQueryValidator validator;
 
     public Data run() {
-        validator.validate();
         Data data = dataDeserializer.deserialize();
         // todo filter by conditions
         return data;
     }
 
-    private static class SelectQueryValidator {
-        public SelectQueryValidator(List<Column> queriedColumns, Metadata metadata, Map<Column, Predicate<String>> conditions) {
-
-        }
-
-        public void validate() {
-
-        }
-    }
 }

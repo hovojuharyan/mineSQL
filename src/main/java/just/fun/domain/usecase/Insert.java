@@ -9,20 +9,9 @@ public class Insert {
     Row row;
     MetadataDeserializer metadataDeserializer;
     Serializer<Row> serializer;
-    InsertDataValidator insertDataValidator;
 
     public void run() {
-        insertDataValidator.validate();
         serializer.serialize(row);
     }
 
-    private static class InsertDataValidator {
-        public InsertDataValidator(Row row, Metadata metadata) {
-
-        }
-
-        public void validate() {
-
-        }
-    }
 }

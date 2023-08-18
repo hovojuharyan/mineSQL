@@ -16,23 +16,12 @@ public class Update {
     DataDeserializer dataDeserializer;
     Map<Column, Predicate<String>> conditions;
     Map<Column, String> newValues;
-    UpdateQueryValidator updateQueryValidator;
 
     public void run() {
-        updateQueryValidator.validate();
         Data data = dataDeserializer.deserialize();
         //todo modify on conditions
         dataSerializer.serialize(data);
     }
 
-    private static class UpdateQueryValidator {
-        public UpdateQueryValidator(Map<Column, String> queried, Metadata metadata, Map<Column, Predicate<String>> conditions) {
-
-        }
-
-        public void validate() {
-
-        }
-    }
 
 }
