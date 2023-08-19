@@ -4,10 +4,15 @@ import just.fun.domain.schema.Metadata;
 import just.fun.serialization.Serializer;
 
 public class CreateTable {
-    Metadata metadata;
-    Serializer<Metadata> serializer;
+    private final Metadata metadata;
+    private final Serializer<Metadata> metadataSerializer;
+
+    public CreateTable(Metadata metadata, Serializer<Metadata> metadataSerializer) {
+        this.metadata = metadata;
+        this.metadataSerializer = metadataSerializer;
+    }
 
     public void run() {
-        serializer.serialize(metadata);
+        metadataSerializer.serialize(metadata);
     }
 }
