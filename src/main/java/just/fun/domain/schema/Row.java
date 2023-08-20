@@ -3,45 +3,47 @@ package just.fun.domain.schema;
 import just.fun.serialization.SerialContent;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class Row implements SerialContent<Row> {
 
-    private final Map<Column, String> cells;
+    private final Map<Column<Object>, Object> cells;
 
     private Row() {
         cells = new HashMap<>();
     }
 
-    public Map<Column, String> cells() {
+    public Map<Column<Object>, Object> cells() {
         return cells;
     }
 
-    public void addCell(Column column, String value) {
-        cells.put(column, value);
+    public <RT> RT columnValue(Column<RT> column) {
+        return (RT) cells.get(column);
     }
 
-    public void updateCell(Column column, String newValue) {
-        cells.put(column, newValue);
+    public <RT> void addCell(Column<RT> column, RT value) {
+        cells.put((Column<Object>) column, value);
     }
 
-    public boolean tryCondition(Column column, Predicate<String> predicate) {
-        return predicate.test(cells.get(column));
+    public <RT> void updateCell(Column<RT> column, RT newValue) {
+        cells.put((Column<Object>) column, newValue);
     }
 
-    public static Row fullRow(List<Column> actualColumns, Map<Column, String> givenCells) {
+    public static Row fullRow(Columns actualColumns,
+                              Map<Column<Object>, Object> givenCells) {
         Row row = new Row();
-        for (Column column : actualColumns) {
-            row.addCell(column, givenCells.getOrDefault(column, null));
+        for (Column<Object> column : actualColumns.all()) {
+            row.cells.put(column, givenCells.getOrDefault(column, null));
         }
         return row;
     }
 
     @Override
     public String serialForm() {
-        return String.join("|", cells.values());
+        return cells.values()
+                .stream().map(Object::toString)
+                .collect(Collectors.joining("|"));
     }
 
 }

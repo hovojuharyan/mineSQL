@@ -1,18 +1,16 @@
 package just.fun.domain.usecase;
 
-import just.fun.domain.schema.Column;
+import just.fun.domain.schema.Conditions;
 import just.fun.domain.schema.Data;
+import just.fun.domain.schema.Updates;
 import just.fun.serialization.Deserializer;
 import just.fun.serialization.Serializer;
-
-import java.util.Map;
-import java.util.function.Predicate;
 
 public class Update {
     Serializer<Data> dataSerializer;
     Deserializer<Data> dataDeserializer;
-    Map<Column, Predicate<String>> conditions;
-    Map<Column, String> updates;
+    Conditions conditions;
+    Updates updates;
 
     public void run() {
         Data data = dataDeserializer.deserialize();

@@ -30,7 +30,7 @@ public class Metadata implements SerialContent<Metadata> {
     @Override
     public String serialForm() {
         return tableName + "\n" +
-                columns.stream().map(Column::getName).collect(Collectors.joining("|")) + "\n" +
+                columns.stream().map(Column::name).collect(Collectors.joining("|")) + "\n" +
                 createdAt;
     }
 

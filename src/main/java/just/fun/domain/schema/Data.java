@@ -4,8 +4,6 @@ import just.fun.serialization.SerialContent;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class Data implements SerialContent<Data> {
@@ -16,40 +14,41 @@ public class Data implements SerialContent<Data> {
         this.rows = new ArrayList<>(rows);
     }
 
-    public Data onlyColumns(List<Column> columnNames) {
+    public Data onlyColumns(Columns columnNames) {
         List<Row> rowList = rows.stream()
                 .map(row -> Row.fullRow(columnNames, row.cells()))
                 .toList();
         return new Data(rowList);
     }
 
-    public Data filter(Map<Column, Predicate<String>> conditions) {
+    public Data filter(Conditions conditions) {
         Data data = new Data(rows);
-        for (Map.Entry<Column, Predicate<String>> entry : conditions.entrySet()) {
-            data = data.filter(entry.getKey(), entry.getValue());
+        for (var condition : conditions.all()) {
+            data = data.filter(condition);
         }
         return data;
     }
 
-    public Data updateRows(Map<Column, String> updates) {
+    public Data updateRows(Updates updates) {
         Data data = new Data(rows);
-        for (Map.Entry<Column, String> entry : updates.entrySet()) {
+        for (var entry : updates.all().entrySet()) {
             data = data.updateRows(entry.getKey(), entry.getValue());
         }
         return data;
     }
 
-    private Data updateRows(Column column, String newValue) {
+    private <RT> Data filter(Condition<RT> condition) {
+        Column<RT> column = condition.getColumn();
+        List<Row> rowList = rows.stream()
+                .filter(row -> condition.test(row.columnValue(column)))
+                .toList();
+        return new Data(rowList);
+    }
+
+    private <RT> Data updateRows(Column<RT> column, RT newValue) {
         Data updated = new Data(rows);
         updated.rows.forEach(row -> row.updateCell(column, newValue));
         return updated;
-    }
-
-    private Data filter(Column column, Predicate<String> predicate) {
-        List<Row> rowList = rows.stream()
-                .filter(row -> row.tryCondition(column, predicate))
-                .toList();
-        return new Data(rowList);
     }
 
     @Override
