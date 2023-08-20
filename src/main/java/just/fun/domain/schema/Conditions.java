@@ -1,16 +1,17 @@
 package just.fun.domain.schema;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Conditions {
     private final List<Condition<Object>> conditions;
 
     public Conditions(List<Condition<Object>> conditions) {
-        this.conditions = conditions;
+        this.conditions = new ArrayList<>(conditions);
     }
 
     public List<Condition<Object>> all() {
-        return conditions;
+        return new ArrayList<>(conditions);
     }
 
     public <RT> void add(Condition<RT> condition) {

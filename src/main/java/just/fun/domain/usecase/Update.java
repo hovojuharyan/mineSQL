@@ -12,6 +12,13 @@ public class Update {
     Conditions conditions;
     Updates updates;
 
+    public Update(Serializer<Data> dataSerializer, Deserializer<Data> dataDeserializer, Conditions conditions, Updates updates) {
+        this.dataSerializer = dataSerializer;
+        this.dataDeserializer = dataDeserializer;
+        this.conditions = conditions;
+        this.updates = updates;
+    }
+
     public void run() {
         Data data = dataDeserializer.deserialize();
         Data updated = data.filter(conditions)
