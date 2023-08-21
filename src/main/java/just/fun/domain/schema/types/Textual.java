@@ -5,4 +5,9 @@ public final class Textual implements ColumnType<String> {
     public String getValue(String textual) {
         return textual;
     }
+
+    @Override
+    public String toString() {
+        return "TEXTUAL";
+    }
 }

@@ -1,13 +1,13 @@
 package just.fun.domain.usecase;
 
 import just.fun.domain.schema.Row;
-import just.fun.serialization.Serializer;
+import just.fun.serialization.RowSerializer;
 
 public class Insert {
     Row row;
-    Serializer<Row> rowSerializer;
+    RowSerializer rowSerializer;
 
-    public Insert(Row row, Serializer<Row> rowSerializer) {
+    public Insert(Row row, RowSerializer rowSerializer) {
         this.row = row;
         this.rowSerializer = rowSerializer;
     }

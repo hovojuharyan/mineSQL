@@ -3,24 +3,19 @@ package just.fun.command;
 import just.fun.domain.schema.Conditions;
 import just.fun.domain.schema.Data;
 import just.fun.domain.schema.Updates;
-import just.fun.serialization.Deserializer;
+import just.fun.serialization.DataSerializer;
 import just.fun.serialization.Serializer;
 
 public class UpdateCommand {
-    private Serializer<Data> dataSerializer;
-    private Deserializer<Data> dataDeserializer;
+    private DataSerializer dataSerializer;
     private Conditions conditions;
     private Updates updates;
 
     private UpdateCommand() {
     }
 
-    public Serializer<Data> dataSerializer() {
+    public DataSerializer dataSerializer() {
         return dataSerializer;
-    }
-
-    public Deserializer<Data> dataDeserializer() {
-        return dataDeserializer;
     }
 
     public Conditions conditions() {
@@ -38,13 +33,8 @@ public class UpdateCommand {
             this.updateCommand = new UpdateCommand();
         }
 
-        public Builder dataSerializer(Serializer<Data> dataSerializer) {
+        public Builder dataSerializer(DataSerializer dataSerializer) {
             updateCommand.dataSerializer = dataSerializer;
-            return this;
-        }
-
-        public Builder dataDeserializer(Deserializer<Data> dataDeserializer) {
-            updateCommand.dataDeserializer = dataDeserializer;
             return this;
         }
 

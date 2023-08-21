@@ -3,34 +3,44 @@ package just.fun.domain.schema;
 import just.fun.serialization.SerialContent;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.stream.Collectors;
 
-public class Metadata implements SerialContent<Metadata> {
+public class Metadata implements SerialContent {
 
-    String tableName;
-    List<Column> columns;
-    LocalDateTime createdAt;
+    private final String tableName;
+    private final Columns columns;
+    private final LocalDateTime createdAt;
 
-    public Metadata(String tableName) {
+    public Metadata(String tableName, Columns columns) {
         this.tableName = tableName;
-        this.columns = new ArrayList<>();
+        this.columns = columns;
         this.createdAt = LocalDateTime.now();
     }
 
-    public void addColumn(Column column) {
+    public Metadata(String tableName, Columns columns, LocalDateTime createdAt) {
+        this.tableName = tableName;
+        this.columns = columns;
+        this.createdAt = createdAt;
+    }
+
+    public <RT> void addColumn(Column<RT> column) {
         columns.add(column);
     }
 
-    public String getTableName() {
+    public String tableName() {
         return tableName;
     }
 
+    public Columns columns() {
+        return columns;
+    }
+
     @Override
-    public String serialForm() {
+    public String toString() {
         return tableName + "\n" +
-                columns.stream().map(Column::name).collect(Collectors.joining("|")) + "\n" +
+                columns.all().stream()
+                        .map(column -> column.name() + "-" + column.type())
+                        .collect(Collectors.joining("|")) + "\n" +
                 createdAt;
     }
 

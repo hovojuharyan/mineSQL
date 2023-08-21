@@ -1,13 +1,14 @@
 package just.fun.command;
 
 import just.fun.domain.schema.Row;
+import just.fun.serialization.RowSerializer;
 import just.fun.serialization.Serializer;
 
 import java.util.Objects;
 
 public final class InsertCommand {
     private Row row;
-    private Serializer<Row> rowSerializer;
+    private RowSerializer rowSerializer;
 
     private InsertCommand() {
     }
@@ -16,7 +17,7 @@ public final class InsertCommand {
         return row;
     }
 
-    public Serializer<Row> rowSerializer() {
+    public RowSerializer rowSerializer() {
         return rowSerializer;
     }
 
@@ -57,7 +58,7 @@ public final class InsertCommand {
             return this;
         }
 
-        public Builder rowSerializer(Serializer<Row> rowSerializer) {
+        public Builder rowSerializer(RowSerializer rowSerializer) {
             insertCommand.rowSerializer = rowSerializer;
             return this;
         }

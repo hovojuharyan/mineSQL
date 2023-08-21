@@ -3,10 +3,11 @@ package just.fun.domain.schema;
 import just.fun.serialization.SerialContent;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class Row implements SerialContent<Row> {
+public class Row implements SerialContent {
 
     private final Map<Column<Object>, Object> cells;
 
@@ -39,11 +40,20 @@ public class Row implements SerialContent<Row> {
         return row;
     }
 
+    public static Row initRow(Columns actualColumns, List<String> values) {
+        List<Column<Object>> columnList = actualColumns.all();
+        Row row = new Row();
+        for (int i = 0; i < columnList.size(); i++) {
+            row.addCell(columnList.get(i), columnList.get(i).parse(values.get(i)));
+        }
+        return row;
+    }
+
     @Override
-    public String serialForm() {
+    public String toString() {
         return cells.values()
                 .stream().map(Object::toString)
-                .collect(Collectors.joining("|"));
+                .collect(Collectors.joining("-"));
     }
 
 }

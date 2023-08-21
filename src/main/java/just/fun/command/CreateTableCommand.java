@@ -1,14 +1,13 @@
 package just.fun.command;
 
 import just.fun.domain.schema.Metadata;
-import just.fun.serialization.Deserializer;
-import just.fun.serialization.Serializer;
+import just.fun.serialization.MetadataSerializer;
 
 import java.util.Objects;
 
 public final class CreateTableCommand {
     private Metadata metadata;
-    private Serializer<Metadata> metadataSerializer;
+    private MetadataSerializer metadataSerializer;
 
     private CreateTableCommand() {
     }
@@ -17,7 +16,7 @@ public final class CreateTableCommand {
         return metadata;
     }
 
-    public Serializer<Metadata> metadataSerializer() {
+    public MetadataSerializer metadataSerializer() {
         return metadataSerializer;
     }
 
@@ -53,12 +52,12 @@ public final class CreateTableCommand {
             this.createTableCommand = new CreateTableCommand();
         }
 
-        public Builder metadataFroDeserializer(Deserializer<Metadata> metadataDeserializer) {
-            createTableCommand.metadata = metadataDeserializer.deserialize();
+        public Builder metadata(Metadata metadata) {
+            createTableCommand.metadata = metadata;
             return this;
         }
 
-        public Builder metadataSerializer(Serializer<Metadata> metadataSerializer) {
+        public Builder metadataSerializer(MetadataSerializer metadataSerializer) {
             createTableCommand.metadataSerializer = metadataSerializer;
             return this;
         }

@@ -2,20 +2,19 @@ package just.fun.command;
 
 import just.fun.domain.schema.Columns;
 import just.fun.domain.schema.Conditions;
-import just.fun.domain.schema.Data;
-import just.fun.serialization.Deserializer;
+import just.fun.serialization.DataSerializer;
 
 import java.util.Objects;
 
 public final class SelectQuery {
-    private Deserializer<Data> dataDeserializer;
+    private DataSerializer dataDeserializer;
     private Columns queriedColumns;
     private Conditions conditions;
 
     private SelectQuery() {
     }
 
-    public Deserializer<Data> dataDeserializer() {
+    public DataSerializer dataDeserializer() {
         return dataDeserializer;
     }
 
@@ -61,7 +60,7 @@ public final class SelectQuery {
             this.selectQuery = new SelectQuery();
         }
 
-        public Builder dataDeserializer(Deserializer<Data> dataDeserializer) {
+        public Builder dataDeserializer(DataSerializer dataDeserializer) {
             selectQuery.dataDeserializer = dataDeserializer;
             return this;
         }

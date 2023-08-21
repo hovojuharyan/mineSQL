@@ -7,6 +7,6 @@ public final class UpdateExecutor implements CommandExecutor<UpdateCommand, Upda
     @Override
     public void execute(UpdateCommand.Builder builder) {
         UpdateCommand command = builder.build();
-        new Update(command.dataSerializer(), command.dataDeserializer(), command.conditions(), command.updates()).run();
+        new Update(command.dataSerializer(), command.conditions(), command.updates()).run();
     }
 }

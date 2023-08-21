@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class Data implements SerialContent<Data> {
+public class Data implements SerialContent {
 
     private final List<Row> rows;
 
@@ -52,8 +52,8 @@ public class Data implements SerialContent<Data> {
     }
 
     @Override
-    public String serialForm() {
-        return rows.stream().map(Row::serialForm)
+    public String toString() {
+        return rows.stream().map(Row::toString)
                 .collect(Collectors.joining("\n"));
     }
 

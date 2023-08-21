@@ -1,5 +1,5 @@
 package just.fun.serialization;
 
-public interface Deserializer<T extends SerialContent<T>> {
+public interface Deserializer<T> {
     T deserialize();
 }
