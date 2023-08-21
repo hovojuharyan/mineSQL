@@ -1,4 +1,4 @@
-package just.fun.defaults.fileio.serialization;
+package just.fun.defaults.fileio;
 
 import just.fun.domain.schema.Columns;
 import just.fun.domain.schema.Data;
@@ -11,32 +11,31 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
-import static just.fun.defaults.fileio.serialization.DefaultFileSerialization.ROOT_PATH;
+import static just.fun.defaults.fileio.Defaults.ROOT_PATH;
 
 public class FileDataSerializer implements DataSerializer {
 
-    private final String path;
-    private final Metadata metadata;
+    private final FileMetadataSerializer fileMetadataSerializer;
 
-    public FileDataSerializer(String path, FileMetadataSerializer fileMetadataSerializer) {
-        this.path = ROOT_PATH + "tbl_data_" + path + ".txt";
-        this.metadata = fileMetadataSerializer.deserialize();
+    public FileDataSerializer(FileMetadataSerializer fileMetadataSerializer) {
+        this.fileMetadataSerializer = fileMetadataSerializer;
     }
 
     @Override
-    public void serialize(Data content) {
+    public void serialize(String tableName, Data content) {
         try {
-            Files.writeString(Path.of(path), content.toString());
+            Files.writeString(Path.of(ROOT_PATH + "tbl_data_" + tableName + ".txt"), content.toString());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
     @Override
-    public Data deserialize() {
+    public Data deserialize(String tableName) {
         try {
+            Metadata metadata = fileMetadataSerializer.deserialize(tableName);
             Columns columns = metadata.columns();
-            List<Row> rowList = Files.readAllLines(Path.of(path))
+            List<Row> rowList = Files.readAllLines(Path.of(ROOT_PATH + "tbl_data_" + tableName + ".txt"))
                     .stream()
                     .map(rowStr -> Row.initRow(columns, List.of(rowStr.split("-"))))
                     .toList();

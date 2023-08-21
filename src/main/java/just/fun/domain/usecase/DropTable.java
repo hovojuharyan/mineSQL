@@ -1,8 +1,9 @@
 package just.fun.domain.usecase;
 
+import just.fun.domain.response.Response;
 import just.fun.serialization.Dropper;
 
-public class DropTable {
+public class DropTable implements Command {
     private final String tableName;
     private final Dropper dropper;
 
@@ -11,7 +12,9 @@ public class DropTable {
         this.dropper = dropper;
     }
 
-    public void run() {
+    @Override
+    public Response run() {
         dropper.drop(tableName);
+        return Response.ok("DROPPED TABLE " + tableName);
     }
 }

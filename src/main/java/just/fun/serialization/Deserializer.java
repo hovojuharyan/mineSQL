@@ -1,5 +1,5 @@
 package just.fun.serialization;
 
 public interface Deserializer<T> {
-    T deserialize();
+    T deserialize(String tableName);
 }

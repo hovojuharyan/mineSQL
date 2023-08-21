@@ -1,5 +1,7 @@
 package just.fun.domain.response;
 
+import just.fun.domain.schema.Data;
+
 import java.util.Arrays;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
@@ -15,6 +17,10 @@ public class Response {
 
     public static Response ok(String message) {
         return new Response(Status.OK, message);
+    }
+
+    public static Response fetched(Data data) {
+        return new Response(Status.OK, data.toString());
     }
 
     public static Response error(String message, Throwable throwable) {

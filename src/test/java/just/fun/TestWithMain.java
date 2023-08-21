@@ -2,6 +2,10 @@ package just.fun;
 
 public class TestWithMain {
 
+    private static void testCreate() {
+
+    }
+
     private static void testInsert() {
 
     }
@@ -23,10 +27,6 @@ public class TestWithMain {
     }
 
     private static void testDropNonExistent() {
-
-    }
-
-    private static void testCreate() {
 
     }
 
