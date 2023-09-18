@@ -9,7 +9,7 @@ public class Column<RT> {
     private final String name;
     private final ColumnType<RT> type;
 
-    public Column(String name, ColumnType<RT> columnType) {
+    public Column(String name, ColumnType columnType) {
         this.name = name;
         this.type = columnType;
     }

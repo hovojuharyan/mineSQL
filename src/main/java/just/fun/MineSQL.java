@@ -5,11 +5,11 @@ import just.fun.domain.response.Response;
 import just.fun.domain.usecase.Command;
 import just.fun.maker.CommandMaker;
 
-public class Engine<IT> {
+public class MineSQL<IT> {
 
     private final CommandMaker<IT> commandMaker;
 
-    private Engine(CommandMaker<IT> commandMaker) {
+    private MineSQL(CommandMaker<IT> commandMaker) {
         this.commandMaker = commandMaker;
     }
 
@@ -18,11 +18,11 @@ public class Engine<IT> {
         return command.run();
     }
 
-    public static <IT> Engine<IT> of(CommandMaker<IT> commandMaker) {
-        return new Engine<>(commandMaker);
+    public static <IT> MineSQL<IT> of(CommandMaker<IT> commandMaker) {
+        return new MineSQL<>(commandMaker);
     }
 
-    public static Engine<String> withDefault() {
-        return new Engine<>(Defaults.commandParser());
+    public static MineSQL<String> withDefaults() {
+        return new MineSQL<>(Defaults.commandParser());
     }
 }

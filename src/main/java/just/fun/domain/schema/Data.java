@@ -14,6 +14,10 @@ public class Data implements SerialContent {
         this.rows = new ArrayList<>(rows);
     }
 
+    public List<Row> getRows() {
+        return rows;
+    }
+
     public Data onlyColumns(Columns columnNames) {
         List<Row> rowList = rows.stream()
                 .map(row -> Row.fullRow(columnNames, row.cells()))

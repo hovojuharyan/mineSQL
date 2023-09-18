@@ -1,26 +1,24 @@
 package just.fun.domain.schema;
 
 import java.util.function.BiPredicate;
+import java.util.function.Predicate;
 
 public class Condition<T> {
     Column<T> column;
-    BiPredicate<T, T> biPredicate;
+    Predicate<T> predicate;
     T conditionalValue;
 
-    public Condition(Column<T> column, BiPredicate<T, T> biPredicate) {
+    public Condition(Column<T> column, T conditionalValue) {
         this.column = column;
-        this.biPredicate = biPredicate;
+        this.conditionalValue = conditionalValue;
+        this.predicate = actual -> actual.equals(conditionalValue);
     }
 
     public boolean test(T actual) {
-        return biPredicate.test(actual, conditionalValue);
+        return predicate.test(actual);
     }
 
     public Column<T> getColumn() {
         return column;
-    }
-
-    public BiPredicate<T, T> getBiPredicate() {
-        return biPredicate;
     }
 }

@@ -29,14 +29,17 @@ public class FileMetadataSerializer implements MetadataSerializer {
 
     @Override
     public Metadata deserialize(String tableName) {
-        Scanner scanner = new Scanner(ROOT_PATH + "tbl_metadata_" + tableName + ".txt");
-        String name = scanner.nextLine();
-        List<Column<Object>> columnList = Arrays.stream(scanner.nextLine().split("\\|"))
-                .map(colStr -> (Column<Object>) new Column<>(colStr.split("-")[0],
-                        ColumnType.of(colStr.split("-")[1])))
-                .toList();
-        Columns columns = new Columns(columnList);
-        LocalDateTime createdAt = LocalDateTime.parse(scanner.nextLine());
-        return new Metadata(name, columns, createdAt);
+        try (Scanner scanner = new Scanner(Path.of(ROOT_PATH + "tbl_metadata_" + tableName + ".txt"))) {
+            String name = scanner.nextLine();
+            List<Column<Object>> columnList = Arrays.stream(scanner.nextLine().split("\\|"))
+                    .map(colStr -> (Column<Object>) new Column<>(colStr.split("-")[0],
+                            ColumnType.of(colStr.split("-")[1])))
+                    .toList();
+            Columns columns = new Columns(columnList);
+            LocalDateTime createdAt = LocalDateTime.parse(scanner.nextLine());
+            return new Metadata(name, columns, createdAt);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

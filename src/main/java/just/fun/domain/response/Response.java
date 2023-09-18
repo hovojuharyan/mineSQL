@@ -3,7 +3,6 @@ package just.fun.domain.response;
 import just.fun.domain.schema.Data;
 
 import java.util.Arrays;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 public class Response {

@@ -13,7 +13,7 @@ public class FileDropper implements Dropper {
     public void drop(String tableName) {
         try {
             Files.delete(Path.of(ROOT_PATH + "tbl_metadata_" + tableName + ".txt"));
-            Files.delete(Path.of(ROOT_PATH + "tbl_data_" + tableName + ".txt"));
+            Files.deleteIfExists(Path.of(ROOT_PATH + "tbl_data_" + tableName + ".txt"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
