@@ -23,10 +23,6 @@ public class Metadata implements SerialContent {
         this.createdAt = createdAt;
     }
 
-    public <RT> void addColumn(Column<RT> column) {
-        columns.add(column);
-    }
-
     public String tableName() {
         return tableName;
     }
@@ -36,7 +32,7 @@ public class Metadata implements SerialContent {
     }
 
     @Override
-    public String toString() {
+    public String asString() {
         return tableName + "\n" +
                 columns.all().stream()
                         .map(column -> column.name() + "-" + column.type())

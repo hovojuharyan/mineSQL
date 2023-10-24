@@ -1,40 +1,31 @@
 package just.fun.domain.usecase;
 
-import just.fun.domain.mocks.DropperMock;
-import just.fun.domain.mocks.MetadataSerializerMock;
+import just.fun.domain.response.Response;
+import just.fun.domain.response.Status;
+import just.fun.domain.schema.Metadata;
 import just.fun.domain.testdata.PersonData;
-import just.fun.serialization.Dropper;
+import org.junit.jupiter.api.Test;
 
-import static just.fun.domain.mocks.MockDatabase.MOCK_DATABASE;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doAnswer;
 
-public class DropTableTest {
+public class DropTableTest extends BaseTest {
 
-    private final DropTable dropTable;
-    private final String tableName;
+    @Test
+    public void drop() {
+        Metadata metadata = PersonData.metadata();
+        String tableName = metadata.tableName();
 
-    public DropTableTest(String tableName, Dropper dropper) {
-        this.tableName = tableName;
-        dropTable = new DropTable(tableName, dropper);
+        METADATA_MAP.put(tableName, metadata);
+        doAnswer(invocation -> METADATA_MAP.remove(tableName)).when(dropper).drop(eq(tableName));
+
+        DropTable dropTable = new DropTable(tableName, dropper);
+        Response response = dropTable.run();
+
+        assertEquals(response.getStatus(), Status.OK);
+        assertNull(METADATA_MAP.get(tableName));
     }
 
-    public void init() {
-        new CreateTable(tableName, PersonData.personMetadata(), new MetadataSerializerMock()).run();
-    }
-
-    public void testDropExisting() {
-        init();
-        assert MOCK_DATABASE.containsMetadata(tableName);
-        assert MOCK_DATABASE.containsData(tableName);
-        dropTable.run();
-        assert !MOCK_DATABASE.containsMetadata(tableName)
-                : "Table metadata wasn't properly dropped - " + tableName;
-        assert !MOCK_DATABASE.containsData(tableName)
-                : "Table metadata wasn't properly dropped - " + tableName;
-    }
-
-    public static void main(String[] args) {
-        String tableName = "person";
-        DropTableTest dropTableTest = new DropTableTest(tableName, new DropperMock());
-        dropTableTest.testDropExisting();
-    }
 }

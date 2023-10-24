@@ -3,7 +3,7 @@ package just.fun.domain.schema.types;
 public final class Bool implements ColumnType<Boolean> {
     @Override
     public Boolean getValue(String textual) {
-        return "TRUE".equals(textual);
+        return "TRUE".equalsIgnoreCase(textual);
     }
 
     @Override

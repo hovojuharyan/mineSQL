@@ -9,9 +9,13 @@ public class Column<RT> {
     private final String name;
     private final ColumnType<RT> type;
 
-    public Column(String name, ColumnType columnType) {
+    public Column(String name, ColumnType<RT> columnType) {
         this.name = name;
         this.type = columnType;
+    }
+
+    public static <T> Column<T> with(String name, ColumnType<T> type) {
+        return new Column<>(name, type);
     }
 
     public String name() {
@@ -24,15 +28,6 @@ public class Column<RT> {
 
     public RT parse(String text) {
         return type.getValue(text);
-    }
-
-    public boolean tryCondition(String actualValue, Condition<RT> condition) {
-        RT parsedActualValue = parse(actualValue);
-        return condition.test(parsedActualValue);
-    }
-
-    public static Column<?> withName(String name) {
-        return new Column<>(name, ColumnType.any());
     }
 
     @Override

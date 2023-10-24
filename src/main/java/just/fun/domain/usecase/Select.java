@@ -1,6 +1,6 @@
 package just.fun.domain.usecase;
 
-import just.fun.domain.response.Response;
+import just.fun.domain.response.ResponseWithData;
 import just.fun.domain.schema.Columns;
 import just.fun.domain.schema.Conditions;
 import just.fun.domain.schema.Data;
@@ -19,12 +19,21 @@ public class Select implements Command {
         this.conditions = conditions;
     }
 
+    public Select(String tableName, DataSerializer dataSerializer, Columns queriedColumns) {
+        this.tableName = tableName;
+        this.dataSerializer = dataSerializer;
+        this.queriedColumns = queriedColumns;
+        this.conditions = null;
+    }
+
     @Override
-    public Response run() {
-        Data data = dataSerializer.deserialize(tableName)
-                .filter(conditions)
-                .onlyColumns(queriedColumns);
-        return Response.fetched(data);
+    public ResponseWithData run() {
+        Data data = dataSerializer.deserialize(tableName);
+        if (conditions != null) {
+            data = data.filter(conditions);
+        }
+        data = data.onlyColumns(queriedColumns);
+        return ResponseWithData.fetched(data);
     }
 
 }

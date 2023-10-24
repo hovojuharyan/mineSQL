@@ -1,52 +1,44 @@
 package just.fun.domain.usecase;
 
-import just.fun.domain.mocks.MetadataSerializerMock;
-import just.fun.domain.mocks.RowSerializerMock;
-import just.fun.domain.schema.Columns;
-import just.fun.domain.schema.Metadata;
+import just.fun.domain.response.Response;
+import just.fun.domain.response.Status;
+import just.fun.domain.schema.Column;
+import just.fun.domain.schema.Data;
 import just.fun.domain.schema.Row;
+import just.fun.domain.schema.types.Bool;
+import just.fun.domain.schema.types.Numeric;
 import just.fun.domain.testdata.PersonData;
-import just.fun.serialization.RowSerializer;
+import org.junit.jupiter.api.Test;
 
-import java.util.List;
-import java.util.Map;
+import java.util.Collections;
 
-import static just.fun.domain.mocks.MockDatabase.MOCK_DATABASE;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doAnswer;
 
-public class InsertTest {
+public class InsertTest extends BaseTest {
 
-    private final Insert insert;
-    private final String tableName;
-    private final Row row;
-    private final RowSerializer rowSerializer;
+    @Test
+    public void insert() {
+        String tableName = PersonData.metadata().tableName();
+        Row row = PersonData.aRow("poxos", "poxosyan", "Armenia", "21", "false");
+        Data data = new Data(Collections.emptyList());
+        DATA_MAP.put(tableName, data);
 
-    public InsertTest(String tableName, Row row, RowSerializer rowSerializer) {
-        this.tableName = tableName;
-        this.row = row;
-        this.rowSerializer = rowSerializer;
-        this.insert = new Insert(tableName, row, rowSerializer);
-    }
+        doAnswer(invocation -> {
+            insertRow(tableName, row);
+            return invocation;
+        }).when(rowSerializer).serialize(eq(tableName), eq(row));
 
-    private void init() {
-        new CreateTable("person", PersonData.personMetadata(), new MetadataSerializerMock()).run();
-    }
+        Insert insert = new Insert(tableName, row, rowSerializer);
+        Response response = insert.run();
 
-    public void testInsertIntoExisting() {
-        init();
-        assert MOCK_DATABASE.containsMetadata(tableName);
-        assert !MOCK_DATABASE.containsData(tableName);
-        insert.run();
-        assert MOCK_DATABASE.containsData(tableName)
-                : "Row wasn't properly inserted - " + row;
-        assert MOCK_DATABASE.containsRow(tableName, row)
-                : "Row wasn't properly inserted - " + row;
-    }
-
-    public static void main(String[] args) {
-        String tableName = "person";
-        Metadata personMetadata = PersonData.personMetadata();
-        Columns columns = personMetadata.columns();
-        Row row = Row.initRow(columns, List.of("poxos", "poxosyan", "25", "FALSE"));
-        new InsertTest(tableName, row, new RowSerializerMock()).testInsertIntoExisting();
+        assertEquals(response.getStatus(), Status.OK);
+        assertTrue(DATA_MAP.containsKey(tableName));
+        assertTrue(DATA_MAP.get(tableName).getRows().contains(row));
+        Row inserted = DATA_MAP.get(tableName).getRows().get(0);
+        int age = inserted.columnValue(Column.with("age", new Numeric()));
+        assertEquals(age, 21);
+        assertFalse(row.columnValue(Column.with("isMarried", new Bool())));
     }
 }

@@ -1,7 +1,7 @@
 package just.fun.domain.response;
 
 public enum Status {
-    OK(200, "SUCCESS!"), ERROR(500, "ERROR!");
+    OK(200, "SUCCESS!!!"), ERROR(500, "ERROR!!!");
 
     private final int code;
     private final String msg;

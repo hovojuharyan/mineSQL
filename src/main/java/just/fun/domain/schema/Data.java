@@ -33,14 +33,6 @@ public class Data implements SerialContent {
         return data;
     }
 
-    public Data updateRows(Updates updates) {
-        Data data = new Data(rows);
-        for (var entry : updates.all().entrySet()) {
-            data = data.updateRows(entry.getKey(), entry.getValue());
-        }
-        return data;
-    }
-
     private <RT> Data filter(Condition<RT> condition) {
         Column<RT> column = condition.getColumn();
         List<Row> rowList = rows.stream()
@@ -49,14 +41,8 @@ public class Data implements SerialContent {
         return new Data(rowList);
     }
 
-    private <RT> Data updateRows(Column<RT> column, RT newValue) {
-        Data updated = new Data(rows);
-        updated.rows.forEach(row -> row.updateCell(column, newValue));
-        return updated;
-    }
-
     @Override
-    public String toString() {
+    public String asString() {
         return rows.stream().map(Row::toString)
                 .collect(Collectors.joining("\n"));
     }

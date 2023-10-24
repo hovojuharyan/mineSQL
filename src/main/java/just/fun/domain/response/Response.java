@@ -1,25 +1,19 @@
 package just.fun.domain.response;
 
-import just.fun.domain.schema.Data;
-
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
 public class Response {
-    Status status;
-    String message;
+    private final Status status;
+    private final String message;
 
-    private Response(Status status, String message) {
+    Response(Status status, String message) {
         this.status = status;
         this.message = message;
     }
 
     public static Response ok(String message) {
         return new Response(Status.OK, message);
-    }
-
-    public static Response fetched(Data data) {
-        return new Response(Status.OK, data.toString());
     }
 
     public static Response error(String message, Throwable throwable) {
@@ -29,6 +23,10 @@ public class Response {
                 .collect(Collectors.joining("\n"));
         sb.append(stacktrace);
         return new Response(Status.ERROR, sb.toString());
+    }
+
+    public Status getStatus() {
+        return status;
     }
 
     @Override

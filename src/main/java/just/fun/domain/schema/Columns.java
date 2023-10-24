@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Columns {
-    private final List<Column<Object>> columns;
+    private List<Column<Object>> columns;
 
-    public Columns(List<Column<Object>> columns) {
-        this.columns = new ArrayList<>(columns);
+    public Columns() {
+        columns = new ArrayList<>();
     }
 
     public List<Column<Object>> all() {

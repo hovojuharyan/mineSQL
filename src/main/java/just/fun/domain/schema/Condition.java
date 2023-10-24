@@ -1,16 +1,13 @@
 package just.fun.domain.schema;
 
-import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
 public class Condition<T> {
-    Column<T> column;
-    Predicate<T> predicate;
-    T conditionalValue;
+    private final Column<T> column;
+    private final Predicate<T> predicate;
 
     public Condition(Column<T> column, T conditionalValue) {
         this.column = column;
-        this.conditionalValue = conditionalValue;
         this.predicate = actual -> actual.equals(conditionalValue);
     }
 

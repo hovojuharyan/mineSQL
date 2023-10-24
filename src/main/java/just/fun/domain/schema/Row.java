@@ -27,10 +27,6 @@ public class Row implements SerialContent {
         cells.put((Column<Object>) column, value);
     }
 
-    public <RT> void updateCell(Column<RT> column, RT newValue) {
-        cells.put((Column<Object>) column, newValue);
-    }
-
     public static Row fullRow(Columns actualColumns,
                               Map<Column<Object>, Object> givenCells) {
         Row row = new Row();
@@ -50,10 +46,17 @@ public class Row implements SerialContent {
     }
 
     @Override
-    public String toString() {
+    public String asString() {
         return cells.values()
                 .stream().map(Object::toString)
                 .collect(Collectors.joining("-"));
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) return false;
+        if (this == obj) return true;
+        if (!(obj instanceof Row other)) return false;
+        return cells.equals(other.cells);
+    }
 }
