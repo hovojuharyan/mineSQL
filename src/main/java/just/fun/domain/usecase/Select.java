@@ -23,16 +23,14 @@ public class Select implements Command {
         this.tableName = tableName;
         this.dataSerializer = dataSerializer;
         this.queriedColumns = queriedColumns;
-        this.conditions = null;
+        this.conditions = new Conditions();
     }
 
     @Override
     public ResponseWithData run() {
-        Data data = dataSerializer.deserialize(tableName);
-        if (conditions != null) {
-            data = data.filter(conditions);
-        }
-        data = data.onlyColumns(queriedColumns);
+        Data data = dataSerializer.deserialize(tableName)
+                .filter(conditions)
+                .onlyColumns(queriedColumns);
         return ResponseWithData.fetched(data);
     }
 

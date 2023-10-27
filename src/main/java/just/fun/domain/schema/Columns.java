@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Columns {
-    private List<Column<Object>> columns;
+    private final List<Column<Object>> columns;
 
     public Columns() {
         columns = new ArrayList<>();

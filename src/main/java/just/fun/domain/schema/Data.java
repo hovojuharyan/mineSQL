@@ -46,5 +46,4 @@ public class Data implements SerialContent {
         return rows.stream().map(Row::toString)
                 .collect(Collectors.joining("\n"));
     }
-
 }

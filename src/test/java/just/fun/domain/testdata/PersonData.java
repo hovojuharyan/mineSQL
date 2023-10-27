@@ -10,18 +10,41 @@ import java.util.List;
 public class PersonData {
 
     public static Metadata metadata() {
-        String tableName = "person";
-        return new Metadata(tableName, columns());
+        return new Metadata(tableName(), columns());
     }
 
     public static Columns columns() {
         Columns columns = new Columns();
-        columns.add(new Column<>("name", new Textual()));
-        columns.add(new Column<>("surname", new Textual()));
-        columns.add(new Column<>("nationality", new Textual()));
-        columns.add(new Column<>("age", new Numeric()));
-        columns.add(new Column<>("isMarried", new Bool()));
+        columns.add(nameColumn());
+        columns.add(surnameColumn());
+        columns.add(nationalityColumn());
+        columns.add(ageColumn());
+        columns.add(isMarriedColumn());
         return columns;
+    }
+
+    public static String tableName() {
+        return "person";
+    }
+
+    public static Column<String> nameColumn() {
+        return Column.with("name", new Textual());
+    }
+
+    public static Column<String> surnameColumn() {
+        return Column.with("surname", new Textual());
+    }
+
+    public static Column<String> nationalityColumn() {
+        return Column.with("nationality", new Textual());
+    }
+
+    public static Column<Integer> ageColumn() {
+        return Column.with("age", new Numeric());
+    }
+
+    public static Column<Boolean> isMarriedColumn() {
+        return Column.with("isMarried", new Bool());
     }
 
     public static Row aRow(String... values) {
