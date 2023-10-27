@@ -27,10 +27,6 @@ public class Metadata implements SerialContent {
         return tableName;
     }
 
-    public Columns columns() {
-        return columns;
-    }
-
     @Override
     public String asString() {
         return tableName + "\n" +

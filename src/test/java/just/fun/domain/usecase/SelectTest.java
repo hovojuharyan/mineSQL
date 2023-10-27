@@ -2,7 +2,14 @@ package just.fun.domain.usecase;
 
 import just.fun.domain.response.ResponseWithData;
 import just.fun.domain.response.Status;
-import just.fun.domain.schema.*;
+import just.fun.domain.schema.Columns;
+import just.fun.domain.schema.Data;
+import just.fun.domain.schema.Metadata;
+import just.fun.domain.schema.Row;
+import just.fun.domain.schema.condition.And;
+import just.fun.domain.schema.condition.Conditions;
+import just.fun.domain.schema.condition.Or;
+import just.fun.domain.schema.condition.Where;
 import just.fun.domain.testdata.PersonData;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -51,10 +58,9 @@ public class SelectTest extends BaseTest {
 
     @Test
     public void selectIsMarried() {
-        Condition<Boolean> isMarriedCondition = Condition.isEqual(isMarriedColumn(), true);
-        Conditions conditions = new Conditions();
-        conditions.add(isMarriedCondition);
-        Select selectMarried = new Select(tableName(), dataSerializer, PersonData.columns(), conditions);
+        And andIsMarried = And.of(isMarriedColumn(), Conditions.isEqual(true));
+        Where where = Where.begin(andIsMarried);
+        Select selectMarried = new Select(tableName(), dataSerializer, PersonData.columns(), where);
         ResponseWithData response = selectMarried.run();
         List<Row> fetchedRows = response.fetchedData().getRows();
 
@@ -66,10 +72,9 @@ public class SelectTest extends BaseTest {
 
     @Test
     public void selectArmenian() {
-        Condition<String> armenianCondition = Condition.isEqual(nationalityColumn(), "Armenia");
-        Conditions conditions = new Conditions();
-        conditions.add(armenianCondition);
-        Select selectArmenians = new Select(tableName(), dataSerializer, PersonData.columns(), conditions);
+        And andIsArmenian = And.of(nationalityColumn(), Conditions.isEqual("Armenia"));
+        Where where = Where.begin(andIsArmenian);
+        Select selectArmenians = new Select(tableName(), dataSerializer, PersonData.columns(), where);
         ResponseWithData response = selectArmenians.run();
         List<Row> fetchedRows = response.fetchedData().getRows();
 
@@ -77,6 +82,63 @@ public class SelectTest extends BaseTest {
         assertEquals(fetchedRows.size(), 10);
         assertEquals(fetchedRows.get(0).columnValue(ageColumn()), 20);
         assertEquals(fetchedRows.get(1).columnValue(surnameColumn()), "cyan");
+    }
+
+    @Test
+    public void selectPolishOr23YearsOld() {
+        And andIsPolish = And.of(nationalityColumn(), Conditions.isEqual("Poland"));
+        Or orIs23YearsOld = Or.of(ageColumn(), Conditions.isEqual(23));
+        Where where = Where.begin(andIsPolish).add(orIs23YearsOld);
+        Select select = new Select(tableName(), dataSerializer, PersonData.columns(), where);
+        ResponseWithData response = select.run();
+        List<Row> fetchedRows = response.fetchedData().getRows();
+
+        assertEquals(response.getStatus(), Status.OK);
+        assertEquals(fetchedRows.size(), 5);
+        assertEquals(fetchedRows.get(0).columnValue(nameColumn()), "b");
+        assertEquals(fetchedRows.get(1).columnValue(nameColumn()), "d");
+    }
+
+    @Test
+    public void selectAgeLessThan22() {
+        And andAgeIsLessThan22 = And.of(ageColumn(), Conditions.isLessThan(22));
+        Where where = Where.begin(andAgeIsLessThan22);
+        Select select = new Select(tableName(), dataSerializer, PersonData.columns(), where);
+        ResponseWithData response = select.run();
+        List<Row> rows = response.fetchedData().getRows();
+
+        assertEquals(response.getStatus(), Status.OK);
+        assertEquals(rows.size(), 9);
+        assertEquals(rows.get(0).columnValue(nameColumn()), "a");
+        assertEquals(rows.get(2).columnValue(nameColumn()), "e");
+    }
+
+    @Test
+    public void selectAgeGreaterThanOrEqual22() {
+        And andAgeIsGreaterThanOrEqual22 = And.of(ageColumn(), Conditions.isGreaterThanOrEqual(22));
+        Where where = Where.begin(andAgeIsGreaterThanOrEqual22);
+        Select select = new Select(tableName(), dataSerializer, PersonData.columns(), where);
+        ResponseWithData response = select.run();
+        List<Row> rows = response.fetchedData().getRows();
+
+        assertEquals(response.getStatus(), Status.OK);
+        assertEquals(rows.size(), 7);
+        assertEquals(rows.get(0).columnValue(nameColumn()), "c");
+        assertEquals(rows.get(2).columnValue(nameColumn()), "g");
+    }
+
+    @Test
+    public void selectNotArmenian() {
+        And andIsNotArmenian = And.of(nationalityColumn(), Conditions.isNotEqual("Armenia"));
+        Where where = Where.begin(andIsNotArmenian);
+        Select select = new Select(tableName(), dataSerializer, PersonData.columns(), where);
+        ResponseWithData response = select.run();
+        List<Row> rows = response.fetchedData().getRows();
+
+        assertEquals(response.getStatus(), Status.OK);
+        assertEquals(rows.size(), 6);
+        assertEquals(rows.get(0).columnValue(nationalityColumn()), "Poland");
+        assertEquals(rows.get(1).columnValue(nationalityColumn()), "USA");
     }
 
     private void initDummyPersonData() {

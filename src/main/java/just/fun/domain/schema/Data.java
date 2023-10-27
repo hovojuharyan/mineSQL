@@ -1,5 +1,6 @@
 package just.fun.domain.schema;
 
+import just.fun.domain.schema.condition.Where;
 import just.fun.serialization.SerialContent;
 
 import java.util.ArrayList;
@@ -25,20 +26,11 @@ public class Data implements SerialContent {
         return new Data(rowList);
     }
 
-    public Data filter(Conditions conditions) {
-        Data data = new Data(rows);
-        for (var condition : conditions.all()) {
-            data = data.filter(condition);
-        }
-        return data;
-    }
-
-    private <RT> Data filter(Condition<RT> condition) {
-        Column<RT> column = condition.getColumn();
-        List<Row> rowList = rows.stream()
-                .filter(row -> condition.test(row.columnValue(column)))
-                .toList();
-        return new Data(rowList);
+    public Data filter(Where where) {
+        List<Row> filtered = rows.stream()
+                .filter(where::testForRow)
+                .collect(Collectors.toList());
+        return new Data(filtered);
     }
 
     @Override
