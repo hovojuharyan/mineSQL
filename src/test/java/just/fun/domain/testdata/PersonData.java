@@ -5,6 +5,7 @@ import just.fun.domain.schema.types.Bool;
 import just.fun.domain.schema.types.Numeric;
 import just.fun.domain.schema.types.Textual;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class PersonData {
@@ -48,7 +49,7 @@ public class PersonData {
     }
 
     public static Row aRow(String... values) {
-        return Row.initRow(PersonData.columns(), List.of(values));
+        return Row.initRow(PersonData.columns(), Arrays.asList(values));
     }
 
     public static Data someData(List<Row> rows) {

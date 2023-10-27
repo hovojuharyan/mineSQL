@@ -50,7 +50,7 @@ public class SelectTest extends BaseTest {
         List<Row> fetchedRows = response.fetchedData().getRows();
 
         assertEquals(response.getStatus(), Status.OK);
-        assertEquals(fetchedRows.size(), 16);
+        assertEquals(fetchedRows.size(), 17);
         assertEquals(fetchedRows.get(0).cells().size(), 2);
         assertEquals(fetchedRows.get(0).columnValue(nameColumn()), "a");
         assertEquals(fetchedRows.get(1).columnValue(surnameColumn()), "byev");
@@ -122,7 +122,7 @@ public class SelectTest extends BaseTest {
         List<Row> rows = response.fetchedData().getRows();
 
         assertEquals(response.getStatus(), Status.OK);
-        assertEquals(rows.size(), 7);
+        assertEquals(rows.size(), 8);
         assertEquals(rows.get(0).columnValue(nameColumn()), "c");
         assertEquals(rows.get(2).columnValue(nameColumn()), "g");
     }
@@ -136,9 +136,36 @@ public class SelectTest extends BaseTest {
         List<Row> rows = response.fetchedData().getRows();
 
         assertEquals(response.getStatus(), Status.OK);
-        assertEquals(rows.size(), 6);
+        assertEquals(rows.size(), 7);
         assertEquals(rows.get(0).columnValue(nationalityColumn()), "Poland");
         assertEquals(rows.get(1).columnValue(nationalityColumn()), "USA");
+    }
+
+    @Test
+    public void selectNationalityNotNull() {
+        And andNationalityIsNotNull = And.of(nationalityColumn(), Conditions.isNotNull());
+        Where where = Where.begin(andNationalityIsNotNull);
+        Select select = new Select(tableName(), dataSerializer, PersonData.columns(), where);
+        ResponseWithData response = select.run();
+        List<Row> rows = response.fetchedData().getRows();
+
+        assertEquals(response.getStatus(), Status.OK);
+        assertEquals(rows.size(), 16);
+    }
+
+    @Test
+    public void selectAmericanOrUnknown() {
+        And andIsAmerican = And.of(nationalityColumn(), Conditions.isEqual("USA"));
+        Or orIsFromUnknown = Or.of(nationalityColumn(), Conditions.isNull());
+        Where where = Where.begin(andIsAmerican).add(orIsFromUnknown);
+        Select select = new Select(tableName(), dataSerializer, PersonData.columns(), where);
+        ResponseWithData response = select.run();
+        List<Row> rows = response.fetchedData().getRows();
+
+        assertEquals(response.getStatus(), Status.OK);
+        assertEquals(rows.size(), 5);
+        assertEquals(rows.get(0).columnValue(nameColumn()), "d");
+        assertEquals(rows.get(4).columnValue(nameColumn()), "q");
     }
 
     private void initDummyPersonData() {
@@ -169,7 +196,8 @@ public class SelectTest extends BaseTest {
                 PersonData.aRow("m", "myan", "Armenia", "24", "true"),
                 PersonData.aRow("n", "nyan", "Armenia", "20", "false"),
                 PersonData.aRow("o", "oyan", "Armenia", "21", "true"),
-                PersonData.aRow("p", "povski", "USA", "21", "false")
+                PersonData.aRow("p", "povski", "USA", "21", "false"),
+                PersonData.aRow("q", "qunknown", null, "66", "false")
         );
     }
 }
