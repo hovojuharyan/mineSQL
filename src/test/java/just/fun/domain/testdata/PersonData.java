@@ -29,11 +29,11 @@ public class PersonData {
     }
 
     public static Column<String> nameColumn() {
-        return Column.with("name", new Textual());
+        return Column.notNull("name", new Textual());
     }
 
     public static Column<String> surnameColumn() {
-        return Column.with("surname", new Textual());
+        return Column.notNull("surname", new Textual());
     }
 
     public static Column<String> nationalityColumn() {

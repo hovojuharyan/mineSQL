@@ -8,14 +8,20 @@ public class Column<RT> {
 
     private final String name;
     private final ColumnType<RT> type;
+    private final boolean nullable;
 
-    public Column(String name, ColumnType<RT> columnType) {
+    private Column(String name, ColumnType<RT> columnType, boolean nullable) {
         this.name = name;
         this.type = columnType;
+        this.nullable = nullable;
     }
 
     public static <T> Column<T> with(String name, ColumnType<T> type) {
-        return new Column<>(name, type);
+        return new Column<>(name, type, true);
+    }
+
+    public static <T> Column<T> notNull(String name, ColumnType<T> type) {
+        return new Column<>(name, type, false);
     }
 
     public String name() {
@@ -24,6 +30,10 @@ public class Column<RT> {
 
     public ColumnType<RT> type() {
         return type;
+    }
+
+    public boolean isNullable() {
+        return nullable;
     }
 
     public RT parse(String text) {

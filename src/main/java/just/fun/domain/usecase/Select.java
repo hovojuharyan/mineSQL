@@ -19,13 +19,6 @@ public class Select implements Command {
         this.where = where;
     }
 
-    public Select(String tableName, DataSerializer dataSerializer, Columns queriedColumns) {
-        this.tableName = tableName;
-        this.dataSerializer = dataSerializer;
-        this.queriedColumns = queriedColumns;
-        this.where = Where.none();
-    }
-
     @Override
     public ResponseWithData run() {
         Data data = dataSerializer.deserialize(tableName)
@@ -33,5 +26,4 @@ public class Select implements Command {
                 .onlyColumns(queriedColumns);
         return ResponseWithData.fetched(data);
     }
-
 }

@@ -2,7 +2,6 @@ package just.fun.domain.usecase;
 
 import just.fun.domain.schema.Data;
 import just.fun.domain.schema.Metadata;
-import just.fun.domain.schema.Row;
 import just.fun.serialization.DataSerializer;
 import just.fun.serialization.Dropper;
 import just.fun.serialization.MetadataSerializer;
@@ -34,10 +33,5 @@ public class BaseTest {
     public void setUp() {
         METADATA_MAP.clear();
         DATA_MAP.clear();
-    }
-
-    protected void insertRow(String tableName, Row row) {
-        Data data = DATA_MAP.get(tableName);
-        data.getRows().add(row);
     }
 }

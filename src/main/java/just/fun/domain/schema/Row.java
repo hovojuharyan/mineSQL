@@ -1,5 +1,6 @@
 package just.fun.domain.schema;
 
+import just.fun.domain.error.NotNullConstraintViolatedExcpetion;
 import just.fun.serialization.SerialContent;
 
 import java.util.HashMap;
@@ -24,6 +25,8 @@ public class Row implements SerialContent {
     }
 
     public <RT> void addCell(Column<RT> column, RT value) {
+        if (!column.isNullable() && value == null)
+            throw new NotNullConstraintViolatedExcpetion(column.name());
         cells.put((Column<Object>) column, value);
     }
 

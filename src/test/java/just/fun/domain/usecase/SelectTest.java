@@ -31,7 +31,7 @@ public class SelectTest extends BaseTest {
 
     @Test
     public void selectAllColumns() {
-        Select selectAllColumns = new Select(tableName(), dataSerializer, PersonData.columns());
+        Select selectAllColumns = new Select(tableName(), dataSerializer, PersonData.columns(), Where.none());
         ResponseWithData response = selectAllColumns.run();
         Data fetched = response.fetchedData();
 
@@ -45,7 +45,7 @@ public class SelectTest extends BaseTest {
         nameSurnameColumns.add(nameColumn());
         nameSurnameColumns.add(surnameColumn());
 
-        Select selectNameSurname = new Select(tableName(), dataSerializer, nameSurnameColumns);
+        Select selectNameSurname = new Select(tableName(), dataSerializer, nameSurnameColumns, Where.none());
         ResponseWithData response = selectNameSurname.run();
         List<Row> fetchedRows = response.fetchedData().getRows();
 
