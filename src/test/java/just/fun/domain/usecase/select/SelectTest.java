@@ -1,37 +1,29 @@
-package just.fun.domain.usecase;
+package just.fun.domain.usecase.select;
 
 import just.fun.domain.response.ResponseWithData;
 import just.fun.domain.response.Status;
 import just.fun.domain.schema.Columns;
 import just.fun.domain.schema.Data;
-import just.fun.domain.schema.Metadata;
+import just.fun.domain.schema.ordering.Ordering;
 import just.fun.domain.schema.Row;
 import just.fun.domain.schema.condition.And;
 import just.fun.domain.schema.condition.Conditions;
 import just.fun.domain.schema.condition.Or;
 import just.fun.domain.schema.condition.Where;
 import just.fun.domain.testdata.PersonData;
-import org.junit.jupiter.api.BeforeEach;
+import just.fun.domain.usecase.Select;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
 import static just.fun.domain.testdata.PersonData.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.when;
 
-public class SelectTest extends BaseTest {
-
-    @BeforeEach
-    public void setup() {
-        initDummyPersonData();
-        when(dataSerializer.deserialize(eq(tableName()))).thenReturn(DATA_MAP.get(tableName()));
-    }
+public class SelectTest extends SelectBaseTest {
 
     @Test
     public void selectAllColumns() {
-        Select selectAllColumns = new Select(tableName(), dataSerializer, PersonData.columns(), Where.none());
+        Select selectAllColumns = new Select(tableName(), dataSerializer, PersonData.columns(), Where.none(), Ordering.none());
         ResponseWithData response = selectAllColumns.run();
         Data fetched = response.fetchedData();
 
@@ -45,7 +37,7 @@ public class SelectTest extends BaseTest {
         nameSurnameColumns.add(nameColumn());
         nameSurnameColumns.add(surnameColumn());
 
-        Select selectNameSurname = new Select(tableName(), dataSerializer, nameSurnameColumns, Where.none());
+        Select selectNameSurname = new Select(tableName(), dataSerializer, nameSurnameColumns, Where.none(), Ordering.none());
         ResponseWithData response = selectNameSurname.run();
         List<Row> fetchedRows = response.fetchedData().getRows();
 
@@ -60,7 +52,7 @@ public class SelectTest extends BaseTest {
     public void selectIsMarried() {
         And andIsMarried = And.of(isMarriedColumn(), Conditions.isEqual(true));
         Where where = Where.begin(andIsMarried);
-        Select selectMarried = new Select(tableName(), dataSerializer, PersonData.columns(), where);
+        Select selectMarried = new Select(tableName(), dataSerializer, PersonData.columns(), where, Ordering.none());
         ResponseWithData response = selectMarried.run();
         List<Row> fetchedRows = response.fetchedData().getRows();
 
@@ -74,7 +66,7 @@ public class SelectTest extends BaseTest {
     public void selectArmenian() {
         And andIsArmenian = And.of(nationalityColumn(), Conditions.isEqual("Armenia"));
         Where where = Where.begin(andIsArmenian);
-        Select selectArmenians = new Select(tableName(), dataSerializer, PersonData.columns(), where);
+        Select selectArmenians = new Select(tableName(), dataSerializer, PersonData.columns(), where, Ordering.none());
         ResponseWithData response = selectArmenians.run();
         List<Row> fetchedRows = response.fetchedData().getRows();
 
@@ -89,7 +81,7 @@ public class SelectTest extends BaseTest {
         And andIsPolish = And.of(nationalityColumn(), Conditions.isEqual("Poland"));
         Or orIs23YearsOld = Or.of(ageColumn(), Conditions.isEqual(23));
         Where where = Where.begin(andIsPolish).add(orIs23YearsOld);
-        Select select = new Select(tableName(), dataSerializer, PersonData.columns(), where);
+        Select select = new Select(tableName(), dataSerializer, PersonData.columns(), where, Ordering.none());
         ResponseWithData response = select.run();
         List<Row> fetchedRows = response.fetchedData().getRows();
 
@@ -103,7 +95,7 @@ public class SelectTest extends BaseTest {
     public void selectAgeLessThan22() {
         And andAgeIsLessThan22 = And.of(ageColumn(), Conditions.isLessThan(22));
         Where where = Where.begin(andAgeIsLessThan22);
-        Select select = new Select(tableName(), dataSerializer, PersonData.columns(), where);
+        Select select = new Select(tableName(), dataSerializer, PersonData.columns(), where, Ordering.none());
         ResponseWithData response = select.run();
         List<Row> rows = response.fetchedData().getRows();
 
@@ -117,7 +109,7 @@ public class SelectTest extends BaseTest {
     public void selectAgeGreaterThanOrEqual22() {
         And andAgeIsGreaterThanOrEqual22 = And.of(ageColumn(), Conditions.isGreaterThanOrEqual(22));
         Where where = Where.begin(andAgeIsGreaterThanOrEqual22);
-        Select select = new Select(tableName(), dataSerializer, PersonData.columns(), where);
+        Select select = new Select(tableName(), dataSerializer, PersonData.columns(), where, Ordering.none());
         ResponseWithData response = select.run();
         List<Row> rows = response.fetchedData().getRows();
 
@@ -131,7 +123,7 @@ public class SelectTest extends BaseTest {
     public void selectNotArmenian() {
         And andIsNotArmenian = And.of(nationalityColumn(), Conditions.isNotEqual("Armenia"));
         Where where = Where.begin(andIsNotArmenian);
-        Select select = new Select(tableName(), dataSerializer, PersonData.columns(), where);
+        Select select = new Select(tableName(), dataSerializer, PersonData.columns(), where, Ordering.none());
         ResponseWithData response = select.run();
         List<Row> rows = response.fetchedData().getRows();
 
@@ -145,7 +137,7 @@ public class SelectTest extends BaseTest {
     public void selectNationalityNotNull() {
         And andNationalityIsNotNull = And.of(nationalityColumn(), Conditions.isNotNull());
         Where where = Where.begin(andNationalityIsNotNull);
-        Select select = new Select(tableName(), dataSerializer, PersonData.columns(), where);
+        Select select = new Select(tableName(), dataSerializer, PersonData.columns(), where, Ordering.none());
         ResponseWithData response = select.run();
         List<Row> rows = response.fetchedData().getRows();
 
@@ -158,7 +150,7 @@ public class SelectTest extends BaseTest {
         And andIsAmerican = And.of(nationalityColumn(), Conditions.isEqual("USA"));
         Or orIsFromUnknown = Or.of(nationalityColumn(), Conditions.isNull());
         Where where = Where.begin(andIsAmerican).add(orIsFromUnknown);
-        Select select = new Select(tableName(), dataSerializer, PersonData.columns(), where);
+        Select select = new Select(tableName(), dataSerializer, PersonData.columns(), where, Ordering.none());
         ResponseWithData response = select.run();
         List<Row> rows = response.fetchedData().getRows();
 
@@ -166,38 +158,5 @@ public class SelectTest extends BaseTest {
         assertEquals(rows.size(), 5);
         assertEquals(rows.get(0).columnValue(nameColumn()), "d");
         assertEquals(rows.get(4).columnValue(nameColumn()), "q");
-    }
-
-    private void initDummyPersonData() {
-        Metadata metadata = PersonData.metadata();
-        String tableName = metadata.tableName();
-        METADATA_MAP.putIfAbsent(tableName, metadata);
-        DATA_MAP.putIfAbsent(tableName, dummyPersonData());
-    }
-
-    private Data dummyPersonData() {
-        return PersonData.someData(dummyPersonRows());
-    }
-
-    private List<Row> dummyPersonRows() {
-        return List.of(
-                PersonData.aRow("a", "ayan", "Armenia", "20", "true"),
-                PersonData.aRow("b", "byev", "Poland", "21", "false"),
-                PersonData.aRow("c", "cyan", "Armenia", "22", "true"),
-                PersonData.aRow("d", "dovski", "USA", "23", "true"),
-                PersonData.aRow("e", "eyan", "Armenia", "20", "true"),
-                PersonData.aRow("f", "fyev", "Poland", "21", "true"),
-                PersonData.aRow("g", "gyan", "Armenia", "22", "false"),
-                PersonData.aRow("h", "hyan", "Armenia", "23", "false"),
-                PersonData.aRow("i", "iyan", "Armenia", "20", "false"),
-                PersonData.aRow("j", "jovski", "USA", "21", "false"),
-                PersonData.aRow("k", "kyan", "Armenia", "22", "true"),
-                PersonData.aRow("l", "lovski", "USA", "23", "false"),
-                PersonData.aRow("m", "myan", "Armenia", "24", "true"),
-                PersonData.aRow("n", "nyan", "Armenia", "20", "false"),
-                PersonData.aRow("o", "oyan", "Armenia", "21", "true"),
-                PersonData.aRow("p", "povski", "USA", "21", "false"),
-                PersonData.aRow("q", "qunknown", null, "66", "false")
-        );
     }
 }

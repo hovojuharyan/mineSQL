@@ -5,6 +5,9 @@ import java.util.function.Predicate;
 
 public class Conditions {
 
+    private Conditions() {
+    }
+
     public static <T extends Comparable<T>> Predicate<T> isNull() {
         return Objects::isNull;
     }

@@ -1,6 +1,7 @@
 package just.fun.domain.schema;
 
 import just.fun.domain.schema.condition.Where;
+import just.fun.domain.schema.ordering.Ordering;
 import just.fun.serialization.SerialContent;
 
 import java.util.ArrayList;
@@ -31,6 +32,13 @@ public class Data implements SerialContent {
                 .filter(where::testForRow)
                 .collect(Collectors.toList());
         return new Data(filtered);
+    }
+
+    public Data orderBy(Ordering ordering) {
+        List<Row> sorted = rows.stream()
+                .sorted(ordering.comparator())
+                .toList();
+        return new Data(sorted);
     }
 
     @Override
