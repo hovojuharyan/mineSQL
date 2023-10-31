@@ -1,5 +1,6 @@
 package just.fun.domain.schema;
 
+import just.fun.domain.error.IllegalLimitOffsetException;
 import just.fun.domain.schema.condition.Where;
 import just.fun.domain.schema.ordering.Ordering;
 import just.fun.serialization.SerialContent;
@@ -39,6 +40,16 @@ public class Data implements SerialContent {
                 .sorted(ordering.comparator())
                 .toList();
         return new Data(sorted);
+    }
+
+    public Data limit(int limit, int offset) {
+        if (limit == 0 && offset == 0) return this;
+        if (limit < 0 || offset < 0) throw new IllegalLimitOffsetException(limit, offset);
+        List<Row> limited = rows.stream()
+                .skip(offset)
+                .limit(limit)
+                .toList();
+        return new Data(limited);
     }
 
     @Override

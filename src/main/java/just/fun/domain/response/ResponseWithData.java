@@ -15,6 +15,10 @@ public class ResponseWithData extends Response {
         return new ResponseWithData(Status.OK, data.toString(), null, data);
     }
 
+    public static ResponseWithData error(Throwable throwable) {
+        return new ResponseWithData(Status.ERROR, throwable.getMessage(), throwable, null);
+    }
+
     public Data fetchedData() {
         return data;
     }
