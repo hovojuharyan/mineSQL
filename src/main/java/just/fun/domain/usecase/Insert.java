@@ -37,7 +37,7 @@ public class Insert implements Command {
             rowSerializer.serialize(tableName, row);
             return Response.ok("INSERTED " + row);
         } catch (NotNullConstraintViolatedExcpetion|UniqueColumnConstraintViolationException e) {
-            return Response.error(e.getMessage(), e);
+            return Response.error(e);
         }
     }
 

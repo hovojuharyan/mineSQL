@@ -1,8 +1,5 @@
 package just.fun.domain.response;
 
-import java.util.Arrays;
-import java.util.stream.Collectors;
-
 public class Response {
     private final Status status;
     private final String message;
@@ -18,13 +15,8 @@ public class Response {
         return new Response(Status.OK, message, null);
     }
 
-    public static Response error(String message, Throwable throwable) {
-        StringBuilder sb = new StringBuilder(message).append("\n");
-        String stacktrace = Arrays.stream(throwable.getStackTrace())
-                .map(StackTraceElement::toString)
-                .collect(Collectors.joining("\n"));
-        sb.append(stacktrace);
-        return new Response(Status.ERROR, sb.toString(), throwable);
+    public static Response error(Throwable throwable) {
+        return new Response(Status.ERROR, throwable.getMessage(), throwable);
     }
 
     public Status getStatus() {
