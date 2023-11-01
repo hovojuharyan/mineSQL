@@ -4,8 +4,8 @@ import just.fun.domain.error.IllegalLimitOffsetException;
 import just.fun.domain.response.ResponseWithData;
 import just.fun.domain.schema.Columns;
 import just.fun.domain.schema.Data;
-import just.fun.domain.schema.ordering.Ordering;
 import just.fun.domain.schema.condition.Where;
+import just.fun.domain.schema.ordering.Ordering;
 import just.fun.serialization.DataSerializer;
 
 public class Select implements Command {

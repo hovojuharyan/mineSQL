@@ -1,6 +1,9 @@
 package just.fun.domain.schema;
 
 import just.fun.domain.error.NotNullConstraintViolatedExcpetion;
+import just.fun.domain.error.UniqueColumnConstraintViolationException;
+import just.fun.domain.schema.unique.UniqueConstraintsSet;
+import just.fun.domain.schema.unique.UniqueValues;
 import just.fun.serialization.SerialContent;
 
 import java.util.HashMap;
@@ -46,6 +49,19 @@ public class Row implements SerialContent {
             row.addCell(columnList.get(i), columnList.get(i).parse(values.get(i)));
         }
         return row;
+    }
+
+    public void handleUniqueConstraints(UniqueConstraintsSet uniqueConstraintsSet) {
+        for (var uniqueConstraint : uniqueConstraintsSet.uniqueConstraints()) {
+            UniqueValues uniqueValues = UniqueValues.empty();
+            for (var column : uniqueConstraint.columnSet()) {
+                uniqueValues.add(columnValue(column));
+            }
+            if (uniqueConstraintsSet.alreadyPresent(uniqueConstraint, uniqueValues)) {
+                throw new UniqueColumnConstraintViolationException(uniqueConstraint);
+            }
+            uniqueConstraintsSet.merge(uniqueConstraint, uniqueValues);
+        }
     }
 
     @Override

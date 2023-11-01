@@ -4,14 +4,15 @@ import just.fun.domain.response.ResponseWithData;
 import just.fun.domain.response.Status;
 import just.fun.domain.schema.Columns;
 import just.fun.domain.schema.Data;
-import just.fun.domain.schema.ordering.Ordering;
 import just.fun.domain.schema.Row;
 import just.fun.domain.schema.condition.And;
 import just.fun.domain.schema.condition.Conditions;
 import just.fun.domain.schema.condition.Or;
 import just.fun.domain.schema.condition.Where;
+import just.fun.domain.schema.ordering.Ordering;
 import just.fun.domain.testdata.PersonData;
 import just.fun.domain.usecase.Select;
+import just.fun.domain.usecase.TestWithDummyData;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -19,7 +20,7 @@ import java.util.List;
 import static just.fun.domain.testdata.PersonData.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class SelectTest extends SelectBaseTest {
+public class SelectTest extends TestWithDummyData {
 
     @Test
     public void selectAllColumns() {

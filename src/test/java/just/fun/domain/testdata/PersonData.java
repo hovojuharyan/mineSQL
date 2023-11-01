@@ -16,6 +16,7 @@ public class PersonData {
 
     public static Columns columns() {
         Columns columns = new Columns();
+        columns.add(idColumn());
         columns.add(nameColumn());
         columns.add(surnameColumn());
         columns.add(nationalityColumn());
@@ -26,6 +27,10 @@ public class PersonData {
 
     public static String tableName() {
         return "person";
+    }
+
+    public static Column<Integer> idColumn() {
+        return Column.notNull("id", new Numeric());
     }
 
     public static Column<String> nameColumn() {

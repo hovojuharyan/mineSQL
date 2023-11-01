@@ -7,6 +7,7 @@ import just.fun.domain.schema.Row;
 import just.fun.domain.schema.condition.Where;
 import just.fun.domain.schema.ordering.Ordering;
 import just.fun.domain.usecase.Select;
+import just.fun.domain.usecase.TestWithDummyData;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -14,7 +15,7 @@ import java.util.List;
 import static just.fun.domain.testdata.PersonData.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class SelectLimitedTest extends SelectBaseTest {
+public class SelectLimitedTest extends TestWithDummyData {
     @Test
     public void selectLimit10() {
         int limit = 10;
