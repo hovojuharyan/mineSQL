@@ -10,11 +10,20 @@ public class Columns {
         columns = new ArrayList<>();
     }
 
+    private Columns(List<Column<Object>> columns) {
+        this.columns = columns;
+    }
+
+    public static Columns empty() {
+        return new Columns(new ArrayList<>());
+    }
+
     public List<Column<Object>> all() {
         return new ArrayList<>(columns);
     }
 
-    public <RT> void add(Column<RT> column) {
+    public <RT> Columns add(Column<RT> column) {
         columns.add((Column<Object>) column);
+        return this;
     }
 }

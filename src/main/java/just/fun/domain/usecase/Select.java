@@ -9,25 +9,25 @@ import just.fun.domain.schema.ordering.Ordering;
 import just.fun.serialization.DataSerializer;
 
 public class Select implements Command {
-    private final String tableName;
-    private final DataSerializer dataSerializer;
+    private final Data from;
     private final Columns queriedColumns;
     private final Where where;
     private final Ordering ordering;
     private final int limit;
     private final int offset;
+    private final Columns grouping;
 
-    public Select(String tableName,
-                  DataSerializer dataSerializer,
+    public Select(Data from,
                   Columns queriedColumns,
                   Where where,
+                  Columns grouping,
                   Ordering ordering,
                   int limit,
                   int offset) {
-        this.tableName = tableName;
-        this.dataSerializer = dataSerializer;
+        this.from = from;
         this.queriedColumns = queriedColumns;
         this.where = where;
+        this.grouping = grouping;
         this.ordering = ordering;
         this.limit = limit;
         this.offset = offset;
@@ -37,15 +37,19 @@ public class Select implements Command {
                   DataSerializer dataSerializer,
                   Columns queriedColumns,
                   Where where,
-                  Ordering ordering) {
-        this(tableName, dataSerializer, queriedColumns, where, ordering, 0, 0);
+                  Columns grouping,
+                  Ordering ordering,
+                  int limit,
+                  int offset) {
+        this(dataSerializer.deserialize(tableName), queriedColumns, where, grouping, ordering, limit, offset);
     }
 
     @Override
     public ResponseWithData run() {
         try {
-            Data data = dataSerializer.deserialize(tableName)
+            Data data = from
                     .filter(where)
+                    .groupBy(grouping)
                     .orderBy(ordering)
                     .limit(limit, offset)
                     .onlyColumns(queriedColumns);

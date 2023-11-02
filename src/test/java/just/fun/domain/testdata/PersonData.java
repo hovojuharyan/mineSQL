@@ -15,14 +15,13 @@ public class PersonData {
     }
 
     public static Columns columns() {
-        Columns columns = new Columns();
-        columns.add(idColumn());
-        columns.add(nameColumn());
-        columns.add(surnameColumn());
-        columns.add(nationalityColumn());
-        columns.add(ageColumn());
-        columns.add(isMarriedColumn());
-        return columns;
+        return Columns.empty()
+        .add(idColumn())
+        .add(nameColumn())
+        .add(surnameColumn())
+        .add(nationalityColumn())
+        .add(ageColumn())
+        .add(isMarriedColumn());
     }
 
     public static String tableName() {

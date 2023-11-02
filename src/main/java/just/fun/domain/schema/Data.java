@@ -2,11 +2,14 @@ package just.fun.domain.schema;
 
 import just.fun.domain.error.IllegalLimitOffsetException;
 import just.fun.domain.schema.condition.Where;
+import just.fun.domain.schema.group.GroupRow;
 import just.fun.domain.schema.ordering.Ordering;
 import just.fun.serialization.SerialContent;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class Data implements SerialContent {
@@ -33,6 +36,18 @@ public class Data implements SerialContent {
                 .filter(where::testForRow)
                 .collect(Collectors.toList());
         return new Data(filtered);
+    }
+
+    public Data groupBy(Columns grouping) {
+        if (grouping.all().isEmpty()) return this;
+        Set<GroupRow> groupRows = new LinkedHashSet<>();
+        for (Row row : rows) {
+            groupRows.add(GroupRow.of(row, grouping));
+        }
+        List<Row> grouped = groupRows.stream()
+                .map(GroupRow::fullRow)
+                .toList();
+        return new Data(grouped);
     }
 
     public Data orderBy(Ordering ordering) {

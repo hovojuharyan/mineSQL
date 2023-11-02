@@ -3,6 +3,7 @@ package just.fun.domain.usecase.select;
 import just.fun.domain.error.IllegalLimitOffsetException;
 import just.fun.domain.response.ResponseWithData;
 import just.fun.domain.response.Status;
+import just.fun.domain.schema.Columns;
 import just.fun.domain.schema.Row;
 import just.fun.domain.schema.condition.Where;
 import just.fun.domain.schema.ordering.Ordering;
@@ -19,7 +20,7 @@ public class SelectLimitedTest extends TestWithDummyData {
     @Test
     public void selectLimit10() {
         int limit = 10;
-        Select select = new Select(tableName(), dataSerializer, columns(), Where.none(), Ordering.none(), limit, 0);
+        Select select = new Select(tableName(), dataSerializer, columns(), Where.none(), Columns.empty(), Ordering.none(), limit, 0);
         ResponseWithData response = select.run();
         List<Row> rows = response.fetchedData().getRows();
 
@@ -33,7 +34,7 @@ public class SelectLimitedTest extends TestWithDummyData {
     public void selectLimit10Offset5() {
         int limit = 10;
         int offset = 5;
-        Select select = new Select(tableName(), dataSerializer, columns(), Where.none(), Ordering.none(), limit, offset);
+        Select select = new Select(tableName(), dataSerializer, columns(), Where.none(), Columns.empty(), Ordering.none(), limit, offset);
         ResponseWithData response = select.run();
         List<Row> rows = response.fetchedData().getRows();
 
@@ -47,7 +48,7 @@ public class SelectLimitedTest extends TestWithDummyData {
     public void selectLimitOffsetIllegal() {
         int limit = -10;
         int offset = -5;
-        Select select = new Select(tableName(), dataSerializer, columns(), Where.none(), Ordering.none(), limit, offset);
+        Select select = new Select(tableName(), dataSerializer, columns(), Where.none(), Columns.empty(), Ordering.none(), limit, offset);
         ResponseWithData response = select.run();
 
         assertEquals(response.getStatus(), Status.ERROR);
@@ -57,7 +58,7 @@ public class SelectLimitedTest extends TestWithDummyData {
     @Test
     public void selectLimitMoreThanSize() {
         int limit = 20;
-        Select select = new Select(tableName(), dataSerializer, columns(), Where.none(), Ordering.none(), limit, 0);
+        Select select = new Select(tableName(), dataSerializer, columns(), Where.none(), Columns.empty(), Ordering.none(), limit, 0);
         ResponseWithData response = select.run();
         List<Row> rows = response.fetchedData().getRows();
 
@@ -70,7 +71,7 @@ public class SelectLimitedTest extends TestWithDummyData {
     @Test
     public void selectOffsetMoreThanSize() {
         int offset = 20;
-        Select select = new Select(tableName(), dataSerializer, columns(), Where.none(), Ordering.none(), 0, offset);
+        Select select = new Select(tableName(), dataSerializer, columns(), Where.none(), Columns.empty(), Ordering.none(), 0, offset);
         ResponseWithData response = select.run();
         List<Row> rows = response.fetchedData().getRows();
 

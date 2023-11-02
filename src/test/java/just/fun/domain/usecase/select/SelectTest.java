@@ -24,7 +24,7 @@ public class SelectTest extends TestWithDummyData {
 
     @Test
     public void selectAllColumns() {
-        Select selectAllColumns = new Select(tableName(), dataSerializer, PersonData.columns(), Where.none(), Ordering.none());
+        Select selectAllColumns = new Select(tableName(), dataSerializer, PersonData.columns(), Where.none(), Columns.empty(), Ordering.none(), 0, 0);
         ResponseWithData response = selectAllColumns.run();
         Data fetched = response.fetchedData();
 
@@ -34,11 +34,11 @@ public class SelectTest extends TestWithDummyData {
 
     @Test
     public void selectNameSurnameColumns() {
-        Columns nameSurnameColumns = new Columns();
-        nameSurnameColumns.add(nameColumn());
-        nameSurnameColumns.add(surnameColumn());
+        Columns nameSurnameColumns = Columns.empty()
+                .add(nameColumn())
+                .add(surnameColumn());
 
-        Select selectNameSurname = new Select(tableName(), dataSerializer, nameSurnameColumns, Where.none(), Ordering.none());
+        Select selectNameSurname = new Select(tableName(), dataSerializer, nameSurnameColumns, Where.none(), Columns.empty(), Ordering.none(), 0, 0);
         ResponseWithData response = selectNameSurname.run();
         List<Row> fetchedRows = response.fetchedData().getRows();
 
@@ -53,7 +53,7 @@ public class SelectTest extends TestWithDummyData {
     public void selectIsMarried() {
         And andIsMarried = And.of(isMarriedColumn(), Conditions.isEqual(true));
         Where where = Where.begin(andIsMarried);
-        Select selectMarried = new Select(tableName(), dataSerializer, PersonData.columns(), where, Ordering.none());
+        Select selectMarried = new Select(tableName(), dataSerializer, PersonData.columns(), where, Columns.empty(), Ordering.none(), 0, 0);
         ResponseWithData response = selectMarried.run();
         List<Row> fetchedRows = response.fetchedData().getRows();
 
@@ -67,7 +67,7 @@ public class SelectTest extends TestWithDummyData {
     public void selectArmenian() {
         And andIsArmenian = And.of(nationalityColumn(), Conditions.isEqual("Armenia"));
         Where where = Where.begin(andIsArmenian);
-        Select selectArmenians = new Select(tableName(), dataSerializer, PersonData.columns(), where, Ordering.none());
+        Select selectArmenians = new Select(tableName(), dataSerializer, PersonData.columns(), where, Columns.empty(), Ordering.none(), 0, 0);
         ResponseWithData response = selectArmenians.run();
         List<Row> fetchedRows = response.fetchedData().getRows();
 
@@ -82,7 +82,7 @@ public class SelectTest extends TestWithDummyData {
         And andIsPolish = And.of(nationalityColumn(), Conditions.isEqual("Poland"));
         Or orIs23YearsOld = Or.of(ageColumn(), Conditions.isEqual(23));
         Where where = Where.begin(andIsPolish).add(orIs23YearsOld);
-        Select select = new Select(tableName(), dataSerializer, PersonData.columns(), where, Ordering.none());
+        Select select = new Select(tableName(), dataSerializer, PersonData.columns(), where, Columns.empty(), Ordering.none(), 0, 0);
         ResponseWithData response = select.run();
         List<Row> fetchedRows = response.fetchedData().getRows();
 
@@ -96,7 +96,7 @@ public class SelectTest extends TestWithDummyData {
     public void selectAgeLessThan22() {
         And andAgeIsLessThan22 = And.of(ageColumn(), Conditions.isLessThan(22));
         Where where = Where.begin(andAgeIsLessThan22);
-        Select select = new Select(tableName(), dataSerializer, PersonData.columns(), where, Ordering.none());
+        Select select = new Select(tableName(), dataSerializer, PersonData.columns(), where, Columns.empty(), Ordering.none(), 0, 0);
         ResponseWithData response = select.run();
         List<Row> rows = response.fetchedData().getRows();
 
@@ -110,7 +110,7 @@ public class SelectTest extends TestWithDummyData {
     public void selectAgeGreaterThanOrEqual22() {
         And andAgeIsGreaterThanOrEqual22 = And.of(ageColumn(), Conditions.isGreaterThanOrEqual(22));
         Where where = Where.begin(andAgeIsGreaterThanOrEqual22);
-        Select select = new Select(tableName(), dataSerializer, PersonData.columns(), where, Ordering.none());
+        Select select = new Select(tableName(), dataSerializer, PersonData.columns(), where, Columns.empty(), Ordering.none(), 0, 0);
         ResponseWithData response = select.run();
         List<Row> rows = response.fetchedData().getRows();
 
@@ -124,7 +124,7 @@ public class SelectTest extends TestWithDummyData {
     public void selectNotArmenian() {
         And andIsNotArmenian = And.of(nationalityColumn(), Conditions.isNotEqual("Armenia"));
         Where where = Where.begin(andIsNotArmenian);
-        Select select = new Select(tableName(), dataSerializer, PersonData.columns(), where, Ordering.none());
+        Select select = new Select(tableName(), dataSerializer, PersonData.columns(), where, Columns.empty(), Ordering.none(), 0, 0);
         ResponseWithData response = select.run();
         List<Row> rows = response.fetchedData().getRows();
 
@@ -138,7 +138,7 @@ public class SelectTest extends TestWithDummyData {
     public void selectNationalityNotNull() {
         And andNationalityIsNotNull = And.of(nationalityColumn(), Conditions.isNotNull());
         Where where = Where.begin(andNationalityIsNotNull);
-        Select select = new Select(tableName(), dataSerializer, PersonData.columns(), where, Ordering.none());
+        Select select = new Select(tableName(), dataSerializer, PersonData.columns(), where, Columns.empty(), Ordering.none(), 0, 0);
         ResponseWithData response = select.run();
         List<Row> rows = response.fetchedData().getRows();
 
@@ -151,7 +151,7 @@ public class SelectTest extends TestWithDummyData {
         And andIsAmerican = And.of(nationalityColumn(), Conditions.isEqual("USA"));
         Or orIsFromUnknown = Or.of(nationalityColumn(), Conditions.isNull());
         Where where = Where.begin(andIsAmerican).add(orIsFromUnknown);
-        Select select = new Select(tableName(), dataSerializer, PersonData.columns(), where, Ordering.none());
+        Select select = new Select(tableName(), dataSerializer, PersonData.columns(), where, Columns.empty(), Ordering.none(), 0, 0);
         ResponseWithData response = select.run();
         List<Row> rows = response.fetchedData().getRows();
 

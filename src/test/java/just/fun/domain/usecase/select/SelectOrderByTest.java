@@ -2,6 +2,7 @@ package just.fun.domain.usecase.select;
 
 import just.fun.domain.response.ResponseWithData;
 import just.fun.domain.response.Status;
+import just.fun.domain.schema.Columns;
 import just.fun.domain.schema.Row;
 import just.fun.domain.schema.condition.And;
 import just.fun.domain.schema.condition.Conditions;
@@ -20,7 +21,7 @@ public class SelectOrderByTest extends TestWithDummyData {
     @Test
     public void orderByAgeAsc() {
         Ordering ageAsc = Ordering.byAsc(ageColumn());
-        Select select = new Select(tableName(), dataSerializer, columns(), Where.none(), ageAsc);
+        Select select = new Select(tableName(), dataSerializer, columns(), Where.none(), Columns.empty(), ageAsc, 0, 0);
         ResponseWithData response = select.run();
         List<Row> rows = response.fetchedData().getRows();
 
@@ -34,7 +35,7 @@ public class SelectOrderByTest extends TestWithDummyData {
     @Test
     public void orderByAgeDesc() {
         Ordering ageAsc = Ordering.byDesc(ageColumn());
-        Select select = new Select(tableName(), dataSerializer, columns(), Where.none(), ageAsc);
+        Select select = new Select(tableName(), dataSerializer, columns(), Where.none(), Columns.empty(), ageAsc, 0, 0);
         ResponseWithData response = select.run();
         List<Row> rows = response.fetchedData().getRows();
 
@@ -50,7 +51,7 @@ public class SelectOrderByTest extends TestWithDummyData {
     public void isMarriedOrderByNationalityDescAndAgeAsc() {
         Where where = Where.begin(And.of(isMarriedColumn(), Conditions.isEqual(true)));
         Ordering nationalityDescAgeAsc = Ordering.byDesc(nationalityColumn()).thenAsc(ageColumn());
-        Select select = new Select(tableName(), dataSerializer, columns(), where, nationalityDescAgeAsc);
+        Select select = new Select(tableName(), dataSerializer, columns(), where, Columns.empty(), nationalityDescAgeAsc, 0, 0);
         ResponseWithData response = select.run();
         List<Row> rows = response.fetchedData().getRows();
 
